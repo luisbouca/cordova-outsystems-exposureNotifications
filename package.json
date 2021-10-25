@@ -1,0 +1,20 @@
+{
+  "name": "com-outsystems-exposure-notification",
+  "version": "1.0.0",
+  "description": "Cordova Exposure Notifications Plugin",
+  "cordova": {
+    "id": "com-outsystems-exposure-notification",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "keywords": [
+    "cordova",
+    "exposure notification",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "Outsystems"
+}

@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="com-outsystems-exposure-notification" version="1.0-OS" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>Exposure Notifications</name>
+
+    <js-module name="outsystems-exposureNotification-plugin" src="www/outsystems-exposureNotification-plugin.js">
+        <clobbers target="ExposureNotifications" />
+    </js-module>
+
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="ExposureNotifications">
+                <param name="android-package" value="com.outsystems.exposurenotifications.ExposureNotifications"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+			<uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
+            <uses-feature android:name="android.hardware.bluetooth" />
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.BLUETOOTH" />
+		</config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <receiver android:name="com.outsystems.exposurenotifications.ExposureNotificationBroadcastReceiver"
+                android:permission="com.google.android.gms.nearby.exposurenotification.EXPOSURE_CALLBACK"
+                android:exported="true">
+                <intent-filter>
+                    <action android:name=
+                        "com.google.android.gms.exposurenotification.ACTION_EXPOSURE_STATE_UPDATE" />
+                    <action android:name=
+                        "com.google.android.gms.exposurenotification.ACTION_EXPOSURE_NOT_FOUND" />
+                    <action android:name=
+                        "com.google.android.gms.exposurenotification.SERVICE_STATE_UPDATED" />
+                </intent-filter>
+            </receiver>
+		</config-file>
+
+        <hook type="after_plugin_install" src="hooks/android/appendClasspathBuildScript.js" />
+
+		<resource-file src="src/android/play-services-nearby-exposurenotification-1.8.4.aar" target="libs/play-services-nearby-exposurenotification-1.8.4.aar"/>
+
+		<framework src="src/android/dependencies.gradle" custom="true" type="gradleReference"/>
+
+        <source-file src="src/android/ExposureNotifications.java" target-dir="src/com/outsystems/exposurenotifications" />
+        <source-file src="src/android/ExposureNotificationBroadcastReceiver.java" target-dir="src/com/outsystems/exposurenotifications" />
+
+    </platform>
+
+    
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="ExposureNotifications">
+                <param name="ios-package" value="ExposureNotifications"/>
+				<param name="onload" value="true"/>
+            </feature>
+        </config-file>
+
+        <preference name="UseSwiftLanguageVersion"/>
+        <dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>
+
+        <source-file src="src/ios/ExposureNotifications.swift" />
+    </platform>
+
+</plugin>
